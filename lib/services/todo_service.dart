@@ -28,22 +28,14 @@ class TodoRepository {
     }
   }
 
-  Future<ApiResponse<TodoId>> getTodosById({
+  Future<TodoId> getTodosById({
     num? id,
   }) async {
-    try {
       final response = await dio.get(
         "https://jsonplaceholder.typicode.com/todos/$id",
       );
-      final data = response.data;
+      var data = response.data;
       TodoId todos = TodoId.fromJson(data);
-      return ApiResponse(
-        successful: true,
-        data: todos,
-        message: "Data fetched successfully",
-      );
-    } on DioError catch (e) {
-      return ApiResponse.handleError(e);
-    }
+      return todos;
   }
 }

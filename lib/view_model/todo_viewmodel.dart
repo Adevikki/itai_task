@@ -45,18 +45,12 @@ class TodoViewModel extends StateNotifier<TodoViewState> {
       final response = await _ref.read(todoRepository).getTodosById(
             id: id,
           );
-      if (response.successful) {
+          
         state = state.copyWith(
           isLoading: Status.loaded,
-          todoId: response.data,
+          todoId: response,
         );
         return;
-      }
-      state = state.copyWith(
-        isLoading: Status.error,
-        errorMessage: response.error,
-      );
-      return;
     } catch (e) {
       state = state.copyWith(
         isLoading: Status.error,
@@ -72,7 +66,7 @@ class TodoViewState {
   final Status isLoading;
   final String? errorMessage;
   TodoViewState(
-      {this.todoId, this.todo, required this.isLoading, this.errorMessage});
+      {required this.todoId, this.todo, required this.isLoading, this.errorMessage});
 
   factory TodoViewState.initial() => TodoViewState(
         isLoading: Status.loading,
@@ -89,7 +83,7 @@ class TodoViewState {
       todo: todo ?? this.todo,
       todoId: todoId ?? this.todoId,
       isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: errorMessage ?? 'error',
     );
   }
 }

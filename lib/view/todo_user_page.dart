@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:itai_test/model/todo_model.dart';
 import 'package:itai_test/utils/enums.dart';
 
 import '../view_model/todo_viewmodel.dart';
@@ -44,7 +41,8 @@ class UserPageViewState extends ConsumerState<UserPageView> {
                   )
                 : view.isLoading == Status.error
                     ? TextButton(
-                        onPressed: () => model.getTodoId(retry: true),
+                        onPressed: () =>
+                            model.getTodoId(retry: true, id: widget.id),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -56,47 +54,66 @@ class UserPageViewState extends ConsumerState<UserPageView> {
                         ))
                     : SafeArea(
                         child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(7),
-                            margin: const EdgeInsets.all(20),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 8,
-                                  color: Color.fromRGBO(0, 0, 0, 0.3),
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 4,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Container(
+                              padding: const EdgeInsets.all(7),
+                              margin: const EdgeInsets.all(20),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 8,
+                                    color: Color.fromRGBO(0, 0, 0, 0.3),
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 4,
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(15),
+                                  topLeft: Radius.circular(15),
                                 ),
-                              ],
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(15),
-                                topLeft: Radius.circular(15),
                               ),
-                            ),
-                            child: Text(
-                              "todo details",
-                              style: GoogleFonts.lato(
-                                fontSize: 34,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                            ListTile(
-                                leading: CircleAvatar(
-                                  child: Text(todo!.id.toString()),
-                                ),
-                                title: Text(
-                                  todo.title!,
-                                  style: TextStyle(
-                                    color: todo.completed!
-                                        ? Colors.grey
-                                        : Colors.black,
+                              child: Center(
+                                child: Text(
+                                  "todo details",
+                                  style: GoogleFonts.lato(
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),]
-                      ))));
+                              ),
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          todo!.id.toString(),
+                                          style: const TextStyle(fontSize: 30),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          todo.title,
+                                          style: TextStyle(
+                                            color: todo.completed
+                                                ? Colors.grey
+                                                : Colors.black,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]))));
   }
 }
